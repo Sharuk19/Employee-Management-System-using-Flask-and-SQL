@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Welcome{% endblock %}
+
+{% block content %}
+<div class="row align-items-center" style="min-height: 70vh;">
+    <div class="col-md-6">
+        <h1 class="fw-bold mb-3">
+            Employee Management System
+        </h1>
+
+        <p class="lead text-muted">
+            A DevOps-enabled web application demonstrating CI/CD pipelines,
+            containerization, orchestration, and cloud deployment using
+            Flask, Docker, Jenkins, Kubernetes, and AWS.
+        </p>
+
+        <ul class="list-unstyled mt-4">
+            <li><i class="bi bi-check-circle text-success"></i> Automated DevOps Pipeline</li>
+            <li><i class="bi bi-check-circle text-success"></i> Scalable Architecture</li>
+            <li><i class="bi bi-check-circle text-success"></i> Cloud Ready</li>
+        </ul>
+
+        <a href="{{ url_for('dashboard') }}" class="btn btn-primary btn-lg mt-4">
+            Enter Dashboard <i class="bi bi-arrow-right"></i>
+        </a>
+    </div>
+
+    <div class="col-md-6 text-center">
+        <i class="bi bi-people-fill text-primary" style="font-size: 180px;"></i>
+    </div>
+</div>
+{% endblock %}
