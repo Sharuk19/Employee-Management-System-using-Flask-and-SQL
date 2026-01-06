@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Checkout from git') {
             steps {
-                git branch: 'main', url: 'https://github.com/sharuk19/employee-management-system.git'
+                git branch: 'master', url: 'https://github.com/sharuk19/employee-management-system.git'
             }
         }
     
