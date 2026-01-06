@@ -2,31 +2,25 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "sharuk19/employee-management-system"
+        DOCKER_IMAGE = "yourdockerhubusername/devops-employee-app"
     }
 
     stages {
-        stage('Checkout from git') {
-            steps {
-                git branch: 'master', url: 'https://github.com/sharuk19/employee-management-system.git'
-            }
-        }
-    
-        stage('Build docker image'){
+
+        stage('Build Docker Image') {
             steps {
                 script {
-                    docker.build("${DOCKER_IMAGE}")
+                    docker.build("${DOCKER_IMAGE}:latest")
                 }
             }
         }
 
-        stage('Push to Docker Hub'){
+        stage('Push to Docker Hub') {
             steps {
                 script {
                     docker.withRegistry('https://registry-1.docker.io', 'dockerhub-creds') {
-                    docker.image("${DOCKER_IMAGE}:latest").push()
+                        docker.image("${DOCKER_IMAGE}:latest").push()
                     }
-
                 }
             }
         }
