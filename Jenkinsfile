@@ -10,16 +10,22 @@ pipeline {
         stage('Get Version Tag') {
             steps {
                 script {
-                    def versionTag = bat(
+                    def rawOutput = bat(
                         script: 'git describe --tags --abbrev=0',
                         returnStdout: true
                     ).trim()
 
+                    def versionTag = rawOutput
+                        .split("\\r?\\n")
+                        .findAll { it?.trim() }
+                        .last()
+                        .trim()
                     env.VERSION_TAG = versionTag
-                    echo "Version Tag: ${env.VERSION_TAG}"
+                    echo "Clean Version Tag: ${env.VERSION_TAG}"
                 }
             }
         }
+
 
         stage('Build Docker Image') {
             steps {
