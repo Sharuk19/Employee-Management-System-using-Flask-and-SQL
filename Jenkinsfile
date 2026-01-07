@@ -7,10 +7,14 @@ pipeline {
 
     stages {
 
-        stage("Get Version Tag") {
+        stage('Get Version Tag') {
             steps {
                 script {
-                    def versionTag = sh(script: "git describe --tags --abbrev=0", returnStdout: true).trim()
+                    def versionTag = bat(
+                        script: 'git describe --tags --abbrev=0',
+                        returnStdout: true
+                    ).trim()
+
                     env.VERSION_TAG = versionTag
                     echo "Version Tag: ${env.VERSION_TAG}"
                 }
@@ -20,7 +24,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    docker.build("${DOCKER_IMAGE}:latest")
+                    docker.build("${DOCKER_IMAGE}:${env.VERSION_TAG}")
                 }
             }
         }
