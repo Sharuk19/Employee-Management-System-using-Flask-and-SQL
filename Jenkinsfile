@@ -39,7 +39,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://registry-1.docker.io', 'dockerhub-creds') {
-                        docker.image("${DOCKER_IMAGE}:latest").push()
+                        docker.image("${DOCKER_IMAGE}:${env.VERSION_TAG}").push()
                     }
                 }
             }
