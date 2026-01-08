@@ -1,32 +1,37 @@
+import os
 from flask import Flask, render_template, request, redirect, url_for
 from models import db, Employee
 
 app = Flask(__name__)
 
-# Database configuration
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///employees.db"
+# Detect environment (default = local)
+DATABASE_URL = os.getenv(
+    "DATABASE_URL",
+    "sqlite:///employees.db"  # local fallback
+)
+
+app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-# Initialize database with app
 db.init_app(app)
 
+with app.app_context():
+    db.create_all()
 
 # -----------------------
-# Landing Page (Front UI)
+# Landing Page
 # -----------------------
 @app.route("/")
 def landing():
     return render_template("landing.html")
 
-
 # -----------------------
-# Dashboard (Employee List)
+# Dashboard
 # -----------------------
 @app.route("/dashboard")
 def dashboard():
     employees = Employee.query.all()
     return render_template("index.html", employees=employees)
-
 
 # -----------------------
 # Add Employee
@@ -48,6 +53,9 @@ def add_employee():
 
     return render_template("add_employee.html")
 
+# -----------------------
+# Edit Employee
+# -----------------------
 @app.route("/edit/<int:emp_id>", methods=["GET", "POST"])
 def edit_employee(emp_id):
     employee = Employee.query.get_or_404(emp_id)
@@ -64,8 +72,7 @@ def edit_employee(emp_id):
     return render_template("edit_employee.html", employee=employee)
 
 # -----------------------
-# App Entry Point
+# Entry Point
 # -----------------------
-
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
